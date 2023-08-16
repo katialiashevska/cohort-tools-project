@@ -1,7 +1,7 @@
 const router = require("express").Router()
 const Cohort = require("./../models/Cohort.model")
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
     try {
         const allCohorts = await Cohort.find()
         res.json(allCohorts)

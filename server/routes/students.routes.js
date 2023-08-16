@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const Student = require("./../models/Student.model")
+const students = require("./students.json")
 
 router.get("/", async (req, res) => {
     try {
@@ -7,6 +8,9 @@ router.get("/", async (req, res) => {
         res.json(allStudents)
     } catch (error) {
         console.log(error)
+        app.get("/", (req, res) => {
+            res.json(students)
+        })
     }
 })
 
