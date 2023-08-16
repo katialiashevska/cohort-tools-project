@@ -45,7 +45,7 @@ const cohortSchema = new Schema(
             type: String,
             required: true,
         },
-        leadteacher: {
+        leadTeacher: {
             type: String,
             required: true,
         },

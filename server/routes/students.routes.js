@@ -1,7 +1,7 @@
 const router = require("express").Router()
 const Student = require("./../models/Student.model")
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
     try {
         const allStudents = await Student.find()
         res.json(allStudents)
@@ -25,11 +25,16 @@ router.post("/", (req, res) => {
         projects: req.body.projects,
     })
         .then(createdStudent => {
-            res.status(201).send(createdStudent)
+            res.status(201).json(createdStudent)
         })
         .catch(error => {
-            res.status(500).send({ error: "Failed to create the student" })
+            res.status(500).json({ error: "Failed to create a student" })
         })
+})
+
+router.get("/cohort/:cohortId", (req, res) => {
+    const cohortId = req.params.id
+    Student.
 })
 
 module.exports = router
