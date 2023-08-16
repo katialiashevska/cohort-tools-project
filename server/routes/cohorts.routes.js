@@ -31,4 +31,37 @@ router.post("/", (req, res) => {
         })
 })
 
+router.get("/:cohortId", (req, res) => {
+    const cohortId = req.params.cohortId
+    Cohort.findById(cohortId)
+        .then(oneCohort => {
+            res.status(200).json(oneCohort)
+        })
+        .catch(error => {
+            res.status(500).json({ error: "Failed to get a single cohort" })
+        })
+})
+
+router.put("/:cohortId", (req, res) => {
+    const cohortId = req.params.cohortId
+    Cohort.findByIdAndUpdate(cohortId, req.body, { new: true })
+        .then(updatedCohort => {
+            res.status(200).json(updatedCohort)
+        })
+        .catch(error => {
+            res.status(500).json({ error: "Failed to update a single cohort" })
+        })
+})
+
+router.delete("/:cohortId", (req, res) => {
+    const cohortId = req.params.cohortId
+    Cohort.findByIdAndDelete(cohortId)
+        .then(() => {
+            res.status(200).send()
+        })
+        .catch(error => {
+            res.status(500).json({ error: "Failed to delete a single cohort" })
+        })
+})
+
 module.exports = router
