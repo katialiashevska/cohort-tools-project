@@ -62,17 +62,17 @@ router.get("/:studentId", (req, res) => {
 //     });
 // });
 
-router.get("/cohort/:cohortId", async (req, res) => {
-  console.log(req.query);
-  const { cohortId } = req.query;
-  const query = getQuery(cohortId);
-  try {
-    const allStudents = await Student.find(query);
-    res.json(allStudents);
-  } catch (error) {
-    console.log(error);
-  }
-});
+// router.get("/cohort/:cohortId", async (req, res) => {
+//   console.log(req.query);
+//   // const { cohortId } = req.query;
+//   // const query = getQuery(cohortId);
+//   try {
+//     const allStudents = await Student.find(query);
+//     res.json(allStudents);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 router.put("/:studentId", (req, res) => {
   const studentId = req.params.studentId;
