@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
         const allStudents = await Student.find().populate("cohort")
         res.json(allStudents)
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 })
 
@@ -30,7 +30,8 @@ router.post("/", (req, res) => {
             res.status(201).json(createdStudent)
         })
         .catch(error => {
-            res.status(500).json({ error: "Failed to create a student" })
+            next(error)
+            // res.status(500).json({ error: "Failed to create a student" })
         })
 })
 
@@ -41,7 +42,7 @@ router.get("/cohort/:cohortId", async (req, res) => {
         const allStudents = await Student.find(query)
         res.json(allStudents)
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 })
 
