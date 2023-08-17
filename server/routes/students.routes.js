@@ -3,16 +3,18 @@ const Student = require("./../models/Student.model")
 const students = require("../students.json")
 const getQuery = require("./../utils/index")
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
     try {
         const allStudents = await Student.find().populate("cohort")
         res.json(allStudents)
-    } catch (error) {
-        next(error)
+    } catch {
+        next({
+            message: "Failed to get all students",
+        })
     }
 })
 
-router.post("/", (req, res) => {
+router.post("/", (req, res, next) => {
     Student.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -29,24 +31,27 @@ router.post("/", (req, res) => {
         .then(createdStudent => {
             res.status(201).json(createdStudent)
         })
-        .catch(error => {
-            next(error)
-            // res.status(500).json({ error: "Failed to create a student" })
+        .catch(() => {
+            next({
+                message: "Failed to create a student",
+            })
         })
 })
 
-router.get("/cohort/:cohortId", async (req, res) => {
+router.get("/cohort/:cohortId", async (req, res, next) => {
     const { cohortId } = req.query
     const query = getQuery(cohortId)
     try {
         const allStudents = await Student.find(query)
         res.json(allStudents)
-    } catch (error) {
-        next(error)
+    } catch {
+        next({
+            message: "Failed to get a cohort",
+        })
     }
 })
 
-router.get("/:studentId", (req, res) => {
+router.get("/:studentId", (req, res, next) => {
     const studentId = req.params.studentId
 
     Student.findById(studentId)
@@ -55,30 +60,36 @@ router.get("/:studentId", (req, res) => {
             console.log("tried to populate", oneStudent)
             res.status(200).json(oneStudent)
         })
-        .catch(error => {
-            res.status(500).json({ error: "Failed to get a single student" })
+        .catch(() => {
+            next({
+                message: "Failed to get a student",
+            })
         })
 })
 
-router.put("/:studentId", (req, res) => {
+router.put("/:studentId", (req, res, next) => {
     const studentId = req.params.studentId
     Student.findByIdAndUpdate(studentId, req.body, { new: true })
         .then(updatedStudent => {
             res.status(200).json(updatedStudent)
         })
-        .catch(error => {
-            res.status(500).json({ error: "Failed to update a single student" })
+        .catch(() => {
+            next({
+                message: "Failed to update a student",
+            })
         })
 })
 
-router.delete("/:studentId", (req, res) => {
+router.delete("/:studentId", (req, res, next) => {
     const studentId = req.params.studentId
     Student.findByIdAndDelete(studentId)
         .then(() => {
             res.status(200).send()
         })
-        .catch(error => {
-            res.status(500).json({ error: "Failed to delete a single student" })
+        .catch(() => {
+            next({
+                message: "Failed to delete a student",
+            })
         })
 })
 
