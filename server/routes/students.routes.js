@@ -5,13 +5,10 @@ const getQuery = require("./../utils/index")
 
 router.get("/", async (req, res) => {
     try {
-        const allStudents = await Student.find()
+        const allStudents = await Student.find().populate("cohort")
         res.json(allStudents)
     } catch (error) {
         console.log(error)
-        app.get("/", (req, res) => {
-            res.json(students)
-        })
     }
 })
 
