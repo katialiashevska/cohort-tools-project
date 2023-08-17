@@ -2,12 +2,11 @@ function errorHandler(err, req, res, next) {
     console.error("ERROR", req.method, req.path, err)
 
     if (!res.headersSent) {
-        const statusCode = err.statusCode || 500
-        const message = err.message || "Internal server error. Check the server console"
-
-        res.status(statusCode).json({
-            message: message,
-        })
+        let statusCode = err.statusCode || 500
+        if (err.name === "ValidationError") {
+            statusCode = 400
+        }
+        res.status(statusCode).json({ name: err.name, message: err.message })
     }
     next(err)
 }

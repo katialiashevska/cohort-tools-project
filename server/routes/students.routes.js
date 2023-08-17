@@ -7,10 +7,8 @@ router.get("/", async (req, res, next) => {
     try {
         const allStudents = await Student.find().populate("cohort")
         res.json(allStudents)
-    } catch {
-        next({
-            message: "Failed to get all students",
-        })
+    } catch (error) {
+        next(error)
     }
 })
 
@@ -31,10 +29,8 @@ router.post("/", (req, res, next) => {
         .then(createdStudent => {
             res.status(201).json(createdStudent)
         })
-        .catch(() => {
-            next({
-                message: "Failed to create a student",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 
@@ -44,10 +40,8 @@ router.get("/cohort/:cohortId", async (req, res, next) => {
     try {
         const allStudents = await Student.find(query)
         res.json(allStudents)
-    } catch {
-        next({
-            message: "Failed to get a cohort",
-        })
+    } catch (error) {
+        next(error)
     }
 })
 
@@ -60,10 +54,8 @@ router.get("/:studentId", (req, res, next) => {
             console.log("tried to populate", oneStudent)
             res.status(200).json(oneStudent)
         })
-        .catch(() => {
-            next({
-                message: "Failed to get a student",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 
@@ -73,10 +65,8 @@ router.put("/:studentId", (req, res, next) => {
         .then(updatedStudent => {
             res.status(200).json(updatedStudent)
         })
-        .catch(() => {
-            next({
-                message: "Failed to update a student",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 
@@ -86,10 +76,8 @@ router.delete("/:studentId", (req, res, next) => {
         .then(() => {
             res.status(200).send()
         })
-        .catch(() => {
-            next({
-                message: "Failed to delete a student",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 

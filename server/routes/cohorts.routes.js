@@ -5,10 +5,8 @@ router.get("/", async (req, res, next) => {
     try {
         const allCohorts = await Cohort.find()
         res.json(allCohorts)
-    } catch {
-        next({
-            message: "Failed to get all cohorts",
-        })
+    } catch (error) {
+        next(error)
     }
 })
 
@@ -28,10 +26,8 @@ router.post("/", (req, res, next) => {
         .then(createdCohort => {
             res.status(201).json(createdCohort)
         })
-        .catch(() => {
-            next({
-                message: "Failed to create a cohort",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 
@@ -41,10 +37,8 @@ router.get("/:cohortId", (req, res, next) => {
         .then(oneCohort => {
             res.status(200).json(oneCohort)
         })
-        .catch(() => {
-            next({
-                message: "Failed to get a cohort",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 
@@ -54,10 +48,8 @@ router.put("/:cohortId", (req, res, next) => {
         .then(updatedCohort => {
             res.status(200).json(updatedCohort)
         })
-        .catch(() => {
-            next({
-                message: "Failed to update a cohort",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 
@@ -67,10 +59,8 @@ router.delete("/:cohortId", (req, res, next) => {
         .then(() => {
             res.status(200).send()
         })
-        .catch(() => {
-            next({
-                message: "Failed to delete a cohort",
-            })
+        .catch(error => {
+            next(error)
         })
 })
 
