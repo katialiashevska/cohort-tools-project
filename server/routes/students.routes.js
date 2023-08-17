@@ -43,25 +43,13 @@ router.get("/:studentId", (req, res) => {
   Student.findById(studentId)
     .populate("cohort")
     .then((oneStudent) => {
+      console.log("tried to populate", oneStudent);
       res.status(200).json(oneStudent);
     })
     .catch((error) => {
       res.status(500).json({ error: "Failed to get a single student" });
     });
 });
-
-// router.get("/cohort/cohortId", (req, res) => {
-//   const cohortId = req.params.cohortId;
-
-//   Student.find((student) => (student.cohort = cohortId))
-//     // collection student
-//     .then((oneStudent) => {
-//       res.status(200).json(oneStudent);
-//     })
-//     .catch((error) => {
-//       res.status(500).json({ error: "Failed to get a single student" });
-//     });
-// });
 
 router.get("/cohort/:cohortId", async (req, res) => {
   console.log(req.query);
