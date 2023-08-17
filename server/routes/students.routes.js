@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Student = require("./../models/Student.model");
+const students = require("../students.json");
 
 router.get("/", async (req, res) => {
   try {
@@ -7,6 +8,9 @@ router.get("/", async (req, res) => {
     res.json(allStudents);
   } catch (error) {
     console.log(error);
+    app.get("/", (req, res) => {
+      res.json(students);
+    });
   }
 });
 
@@ -23,7 +27,6 @@ router.post("/", (req, res) => {
     image: req.body.image,
     cohort: req.body.cohort,
     projects: req.body.projects,
-    cohort: req.body.cohort,
   })
     .then((createdStudent) => {
       res.status(201).json(createdStudent);
@@ -35,13 +38,40 @@ router.post("/", (req, res) => {
 
 router.get("/:studentId", (req, res) => {
   const studentId = req.params.studentId;
+
   Student.findById(studentId)
+    .populate("cohort")
     .then((oneStudent) => {
       res.status(200).json(oneStudent);
     })
     .catch((error) => {
       res.status(500).json({ error: "Failed to get a single student" });
     });
+});
+
+// router.get("/cohort/cohortId", (req, res) => {
+//   const cohortId = req.params.cohortId;
+
+//   Student.find((student) => (student.cohort = cohortId))
+//     // collection student
+//     .then((oneStudent) => {
+//       res.status(200).json(oneStudent);
+//     })
+//     .catch((error) => {
+//       res.status(500).json({ error: "Failed to get a single student" });
+//     });
+// });
+
+router.get("/cohort/:cohortId", async (req, res) => {
+  console.log(req.query);
+  const { cohortId } = req.query;
+  const query = getQuery(cohortId);
+  try {
+    const allStudents = await Student.find(query);
+    res.json(allStudents);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.put("/:studentId", (req, res) => {
